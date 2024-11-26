@@ -14,13 +14,13 @@ Note: G-Wing was developed in the Python 3 language, using the Spyder IDE.
     * Preloaded wings are commented out in a listed immediately following header comments
     * One wing will be uncommented, so G-Wing will execute without error with no editing.
 3. Execute GWingMAIN.py
-4. View plot outputs to view the wing being designed.  See "Edditing Existing Wings" to learn how to output G-Code
+4. View plot outputs to view the wing being designed.  See "Editing Existing Wings" to learn how to output G-Code
 
-## Editing Existing Wings (And outputing G-Code)
-1. Open "GWing/Wings/<InsertWingName>/Settings.pi"
+## Editing Existing Wings (And outputing G-Code, demonstrating with "ExampleWing")
+1. Open "GWing/Wings/ExampleWing/Settings.pi"
 2. Edited desired parameter
     * The attempt was made to thoroughly comment the settings file
-    * A typical parameter to edit is "GCodeWrite", this comes default as 0.  Change this parameter to 1 for G-Wing to generate G-Code.  Once executed, the resulting G-Code will be placed in the "GWing/Wings/<InsertWingName>/GCode" folder.
+    * A typical parameter to edit is "GCodeWrite", this comes default as 0.  Change this parameter to 1 for G-Wing to generate G-Code.  Once executed, the resulting G-Code will be placed in the "GWing/Wings/ExampleWing/GCode" folder.
 
 ## Creating New Wings
 1. In the "Wings" folder, copy any existing wing folder and paste the copy as the new name, for now lets call this new wing "NewWing".
