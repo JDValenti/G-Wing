@@ -25,41 +25,11 @@ To Do:
 # ---------------------------- (Uncomment One) -------------------------------#
 # ----------------------------------------------------------------------------#
 
-# from Wings.Type00.Settings import *
-# from Wings.Type00_SparEx.Settings import *
-# from Wings.Type10.Settings import *
-# from Wings.Type10_cuffed.Settings import *
-# from Wings.Type10Disp.Settings import *
-# from Wings.Type11.Settings import *
-# from Wings.Type11_assym.Settings import *
-# from Wings.Type11_bell.Settings import *
-# from Wings.Type11_thunder.Settings import *
-# from Wings.Type20.Settings import *
-# from Wings.Type20_parabolic.Settings import *
-# from Wings.Type21.Settings import *
-# from Wings.Type22.Settings import *
-
-# from Wings.CLSparsEx1.Settings import *
-# from Wings.CLSparsEx2.Settings import *
-# from Wings.CLSparsEx2Wskin.Settings import *
-# from Wings.CLSparsEx2DxConstr.Settings import *
-
-# from Wings.SkinDef1BLwing.Settings import *
-
-# from Wings.BendRect.Settings import *
-from Wings.BendValenti.Settings import *
-# from Wings.JoesWing.Settings import *
-# from Wings.DrewWing.Settings import *
-
-# from Wings.dxConstrained.Settings import *
+from Wings.ExampleWing.Settings import *
 
 # ----------------------------------------------------------------------------# 
 # ----------------------------------------------------------------------------# 
 # ----------------------------------------------------------------------------# 
-
-# import importlib
-# WingFolderPath = importlib.import_module("Wings."+WingFolder)
-# from WingFolderPath.settings import *
 
 import numpy as np
 from CodeFiles.Aerodynamics.Airfoils.operations import *
@@ -82,39 +52,11 @@ try:
 except NameError:
     pass
 
-
-
-
 try:
     suppressPlot
     print("Plotting Suppressed")
 except NameError:
     suppressPlot = 0
-
-# if 'b' in globals():
-#     S = b**2/AR
-# elif 'S' in globals():
-#     b = np.sqrt(AR*S)*1000
-    
-  
-
-
-# print("Scale     = %6.4f" %scale)
-# print("Wing Span = %6.4fm" %(b/1000))
-# print("Wing Area = %6.4fm^2" %(S))
-# print("Mass  = %6.4fkg" %(P/9.8))
-
-
-# if GCodeWrite == 1 or SCADWrite != 0:
-#     if  os.path.isdir(fileName) and fileOverwrite == 0:
-#         folderName = fileName+"_new"
-#     elif os.path.isdir(fileName) and fileOverwrite == 1:
-#         import shutil
-#         shutil.rmtree(fileName)
-#         folderName = fileName
-#     else:
-#         folderName = fileName
-#     os.mkdir(folderName)
 
 W_G = copy.deepcopy(P)
 try:
@@ -174,6 +116,10 @@ elif WingType == 1.1:
     print("| Solve: Chord             |")
     print("|--------------------------|\n")
     from CodeFiles.Aerodynamics.Design.SinglePoint import LiftTwist
+    try:
+        cL1 = cLaero; cL2 = cLstruct
+    except:
+        pass
     [WingShape, LiftDist] = LiftTwist(n,0.001*b,AR,cL1,cL2,a,rho,W_G,\
                                       liftShape,twist,fileName,nAVL,pLL_AF[0],dispPlots)
         # n,b,AR,cL1,cL2,a,rho,W_G,liftShape,twist,fileName,nAVL,pLL_AF[0],dispPlots
@@ -346,67 +292,6 @@ while (weightConverged == 0 and aeroStructIter <= aeroStructIterMax) or oneMoreT
         oneMoreTime = 1
     elif weightConverged == 1 and iterateWeights == 1 and oneMoreTime == 1:
         oneMoreTime = 0
-
-     
-
-if 0: # Output Scaling Results
-    if FSroot[1]<=FS:
-        sparsActive = 1
-    else:
-        sparsActive = 0
-    if FSroot[0]<=FS:
-        wingFail = 1
-    else:
-        wingFail = 0
-        
-    print("Scale           = %8.4f" %scale)
-    print("Aspect Ratio    = %5.1f" %AR)
-    print("Taper Ratio     = %5.1f" %planform)
-    print("Wing Span       = %8.4fm" %(b/1000))
-    print("Wing Area       = %8.4fm^2" %(S))
-    print("Non-Wing Mass   = %8.4fkg" %(P/9.8))
-    print("GTO Mass        = %8.4fkg" %(mTot))
-    print("AF Thickness    = %2.0i" %(AFthickness*100))
-    print("FS design       = %5.1f" %(FS))
-    print("FS @ Root       = %5.1f" %(FSroot[0]))
-    print("FS @ Root,Skin  = %5.1f" %(FSroot[1]))
-    print("FS @ Root,Spars = %5.1f" %(FSroot[2]))
-    print("delta_t/b @ 1g  = %5.4e mm " %(1000*TipDisplacement[0]/b))
-    print("delta_t/b @ 3g  = %5.4e mm " %(1000*TipDisplacement[1]/b))
-    print("delta_t/b @ 5g  = %5.4e mm " %(1000*TipDisplacement[2]/b))
-    print("Spars Active    = %3.0i" % sparsActive)
-    print("Wing Fail       = %3.0i" % wingFail)
-    
-    
-    ScalingNumbers = [scale,AR,b/1000,S,P/9.8,mTot,AFthickness,FS,FSroot[0],FSroot[1],FSroot[2],sparsActive]
-    scalingResults = open("ScalingStudy\\ScalingResults.csv", "a")  # append mode
-    scalingResults.write("%8.4f," %scale)
-    scalingResults.write("%5.1f," %AR)
-    scalingResults.write("%3.2f," %planform)
-    scalingResults.write("%8.4f," %(b/1000))
-    scalingResults.write("%8.4f," %(S))
-    scalingResults.write("%8.4f," %(P/9.8))
-    scalingResults.write("%8.4f," %(mTot))
-    scalingResults.write("%3.2f," %(AFthickness))
-    scalingResults.write("%6.3f," %(extrWidth))
-    scalingResults.write("%6.4e," %(FSroot[3]))
-    scalingResults.write("%5.1f," %(FS))
-    scalingResults.write("%5.1f," %(FSroot[0]))
-    scalingResults.write("%5.1f," %(FSroot[1]))
-    scalingResults.write("%5.1f," %(FSroot[2]))
-    scalingResults.write("%8.4e," %(Ixroot[0]))
-    scalingResults.write("%8.4e," %(Ixroot[1]))
-    scalingResults.write("%8.4e," %(Ixroot[2]))
-    scalingResults.write("%5.4e," %(1000*TipDisplacement[0]/b))
-    scalingResults.write("%5.4e," %(1000*TipDisplacement[1]/b))
-    scalingResults.write("%5.4e," %(1000*TipDisplacement[2]/b))
-    scalingResults.write("%3.0i," % sparsActive)
-    scalingResults.write("%3.0i," % wingFail)
-    scalingResults.write("%3.0i," % (sparsActive + wingFail))
-    scalingResults.write("%3.0i" % (skinScale))
-    scalingResults.close()
-
-    StructFig.savefig('ScalingStudy\image\StructFig.png')
 
 t2 = time.perf_counter()
 strucTime = t2 - t1 
@@ -794,13 +679,13 @@ t3 = time.perf_counter()
 gcodeTime = t3 - t2
 
 if SCADWrite == 1 or SCADWrite == 3:
-    print("Full OpenSCAD file WRITTEN!")
     from CodeFiles.OpenSCAD.SCADOutput import fullOutput
     fullOutput(fileName,b,pLL_AF[0],nSCAD,extrWidth,extrWidth,2*extrWidth,alpha0L,WingShape,WingStruct,AFcoords)
+    print("Full OpenSCAD file WRITTEN!")
 if SCADWrite == 2 or SCADWrite == 3:
-    print("Short OpenSCAD file WRITTEN!")
     from CodeFiles.OpenSCAD.SCADOutput import shortOutput
     shortOutput(fileName,b,pLL_AF[0],nSCAD,extrWidth,extrWidth,2*extrWidth,alpha0L,WingShape,WingStruct,AFcoords)
+    print("Short OpenSCAD file WRITTEN!")
     
 print("Done!!! :)")
 t4 = time.perf_counter()
